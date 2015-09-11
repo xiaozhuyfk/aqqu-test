@@ -3,31 +3,31 @@ Copyright 2015, University of Freiburg.
 
 Elmar Haussmann <haussmann@cs.uni-freiburg.de>
 """
-from query_translator import new_ranker
+from query_translator import ranker
 from collections import OrderedDict
 
 free917_entities = "evaluation-data/free917_entities.txt"
 
 # The scorers that can be selected.
-scorer_list = [new_ranker.AccuModel('F917_Ranker',
-                                    "free917train",
-                                    top_ngram_percentile=2,
-                                    rel_regularization_C=0.002),
-               new_ranker.AccuModel('F917_Ranker_entity_oracle',
-                                    "free917train",
-                                    entity_oracle_file=free917_entities,
-                                    top_ngram_percentile=2,
-                                    rel_regularization_C=1.0),
-               new_ranker.AccuModel('WQ_Ranker',
-                                    "webquestionstrain",
-                                    top_ngram_percentile=5,
-                                    rel_regularization_C=1.0),
-               new_ranker.SimpleScoreRanker('SimpleRanker'),
-               new_ranker.SimpleScoreRanker('SimpleRanker_entity_oracle',
-                                            entity_oracle_file=free917_entities),
-               new_ranker.LiteralRanker('LiteralRanker'),
-               new_ranker.LiteralRanker('LiteralRanker_entity_oracle',
-                                        entity_oracle_file=free917_entities),
+scorer_list = [ranker.AccuModel('F917_Ranker',
+                                 "free917train",
+                                 top_ngram_percentile=2,
+                                 rel_regularization_C=0.002),
+               ranker.AccuModel('F917_Ranker_entity_oracle',
+                                 "free917train",
+                                 entity_oracle_file=free917_entities,
+                                 top_ngram_percentile=2,
+                                 rel_regularization_C=1.0),
+               ranker.AccuModel('WQ_Ranker',
+                                 "webquestionstrain",
+                                 top_ngram_percentile=5,
+                                 rel_regularization_C=1.0),
+               ranker.SimpleScoreRanker('SimpleRanker'),
+               ranker.SimpleScoreRanker('SimpleRanker_entity_oracle',
+                                         entity_oracle_file=free917_entities),
+               ranker.LiteralRanker('LiteralRanker'),
+               ranker.LiteralRanker('LiteralRanker_entity_oracle',
+                                     entity_oracle_file=free917_entities),
                ]
 
 # A dictionary used for lookup via scorer name.
