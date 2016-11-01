@@ -164,7 +164,7 @@ class QueryTranslator(object):
     def extract_candidates(self, query, candidates):
         id = query.id
         answer = query.target_result
-        data_path = "/research/aqqu/training_data/test-aqqu/" + str(id)
+        data_path = "/research/aqqu/training_data/train-aqqu/" + str(id)
         codecsWriteFile(data_path, "")
 
         logger.info("Extracting DATA for query " + str(id))
