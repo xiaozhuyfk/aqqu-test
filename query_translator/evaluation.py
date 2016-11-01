@@ -163,7 +163,7 @@ def evaluate_translator(translator, queries, n_queries=9999,
                 continue
         logger.info("Translating query (id=%s) %s of %s for evaluation." %
                     (q.id, n_translated_queries + 1, len(evaluation_queries)))
-        results = translator.translate_and_execute_query(q.utterance,
+        results = translator.translate_and_execute_query(q,
                                                          n_top=n_top)
         for result in results:
             candidate = result.query_candidate

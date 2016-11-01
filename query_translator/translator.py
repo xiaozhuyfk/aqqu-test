@@ -210,13 +210,14 @@ class QueryTranslator(object):
             json.dump(d, f, indent=4)
 
 
-    def translate_and_execute_query(self, query, n_top=200):
+    def translate_and_execute_query(self, q, n_top=200):
         """
         Translates the query and returns a list
         of namedtuples of type TranslationResult.
         :param query:
         :return:
         """
+        query = q.utterance
         TranslationResult = collections.namedtuple('TranslationResult',
                                                    ['query_candidate',
                                                     'query_result_rows'],
@@ -240,7 +241,7 @@ class QueryTranslator(object):
         n_total_results = 0
         if len(ranked_candidates) > n_top:
             logger.info("Truncating returned candidates to %s." % n_top)
-        self.extract_candidates(query, ranked_candidates)
+        self.extract_candidates(q, ranked_candidates)
         for query_candidate in ranked_candidates[:n_top]:
             query_result = query_candidate.get_result(include_name=True)
             n_total_results += sum([len(rows) for rows in query_result])
