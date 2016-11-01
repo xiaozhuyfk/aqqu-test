@@ -16,6 +16,7 @@ from corenlp_parser.parser import CoreNLPParser
 import globals
 import collections
 from util import codecsWriteFile, codecsDumpJson
+import re
 
 
 
