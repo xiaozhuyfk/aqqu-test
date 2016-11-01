@@ -164,7 +164,7 @@ class QueryTranslator(object):
         id = query.id
         answer = query.target_result
         data_path = "/research/aqqu/training_data/test-aqqu/" + str(id)
-        codecsWriteFile(path, "")
+        codecsWriteFile(data_path, "")
 
         logger.info("Extracting DATA for query " + str(id))
 
