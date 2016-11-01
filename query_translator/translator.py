@@ -15,6 +15,9 @@ import time
 from corenlp_parser.parser import CoreNLPParser
 import globals
 import collections
+from util import codecsWriteFile, codecsDumpJson
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -154,6 +157,59 @@ class QueryTranslator(object):
         query.identified_entities = entities
         return query
 
+    def tokenize_term(self, t):
+        return re.sub('[?!@#$%^&*,()_+=\'\d\./]', '', t).lower()
+
+    def extract_candidates(self, query, candidates):
+        id = query.id
+        answer = query.target_result
+        data_path = "/research/aqqu/training_data/test-aqqu/" + str(id)
+        codecsWriteFile(path, "")
+
+        logger.info("Extracting DATA for query " + str(id))
+
+        question = query.utterance.lower()[:-1]
+        tokens = [self.tokenize_term(t) for t in question.split()]
+        story = []
+        S = []
+        R = []
+        O = []
+        y = []
+
+        for candidate in candidates[:20]:
+            try:
+                relation = candidate.relations[-1]
+                s = relation.source_node.entity.entity.name
+                r = relation.name
+                relations = re.split("\.\.|\.", r)[-2:]
+                rels = [self.tokenize_term(e) for t in relations for e in re.split('\.\.|\.|_', t)]
+                subjects = [re.sub('[?!@#$%^&*,()_+=\'/]', '', t).lower() for t in s.split()]
+                objects = [x[1] for x in candidate.get_result(include_name=True)]
+
+                sentence = subjects + rels
+                story.append(sentence)
+                S.append(subjects)
+                R.append(rels)
+                O.append(objects)
+
+                hasAnswer = False
+                for o in objects:
+                    if o in answer:
+                        hasAnswer = True
+                y.append(hasAnswer * 1.0)
+            except:
+                pass
+        d = {"query" : tokens,
+             "story" : story,
+             "answer" : answer,
+             "S": S,
+             "R": R,
+             "O": O,
+             "y": y}
+        with codecs.open(data_path, mode='w', encoding='utf-8') as f:
+            json.dump(d, f, indent=4)
+
+
     def translate_and_execute_query(self, query, n_top=200):
         """
         Translates the query and returns a list
@@ -184,6 +240,7 @@ class QueryTranslator(object):
         n_total_results = 0
         if len(ranked_candidates) > n_top:
             logger.info("Truncating returned candidates to %s." % n_top)
+        self.extract_candidates(query, ranked_candidates)
         for query_candidate in ranked_candidates[:n_top]:
             query_result = query_candidate.get_result(include_name=True)
             n_total_results += sum([len(rows) for rows in query_result])
