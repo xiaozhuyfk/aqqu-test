@@ -6,3 +6,4 @@ corenlp-frontend/
 lib/
 virtuoso-db/
 virtuoso-opensource/
+.idea/

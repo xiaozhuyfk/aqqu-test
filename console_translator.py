@@ -47,6 +47,14 @@ def main():
         logger.info("#candidates: %s" % len(results))
         if len(results) > 0:
             best_candidate = results[0].query_candidate
+
+            relation = best_candidate.relations[0]
+            last_node = best_candidate.nodes[-1]
+            print relation.name
+            print relation.source_node.entity.entity.id
+            print len(candidate.relations), candidate.pattern
+            print last_node.name
+
             sparql_query = best_candidate.to_sparql_query()
             result_rows = results[0].query_result_rows
             result = []
