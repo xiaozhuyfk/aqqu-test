@@ -50,12 +50,14 @@ def main():
 
             for result in results:
                 candidate = result.query_candidate
-                relation = candidate.relations[0]
-                last_node = candidate.nodes[-1]
+                relation = candidate.relations[-1]
+                #last_node = candidate.nodes[-1]
                 print candidate.graph_as_simple_string()
+                print candidate.get_result(include_name=True)
                 print candidate.pattern
                 print relation.name
                 print relation.source_node.entity.entity.name
+                print ""
                 #print len(candidate.relations), candidate.pattern
                 #print last_node.name
 
